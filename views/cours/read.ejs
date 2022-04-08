@@ -44,31 +44,34 @@
             </tr>
           </thead>
           <tbody>
-            <% cours.personnes.forEach(personne => { %>
+            <% for( let index = 0; index < cours.personnes.length; index++ ) {
+            %>
             <tr>
-              <td><%= personne.name %></td>
+              <td><%= cours.personnes[index].name %></td>
               <td>
                 <a
                   class="btn btn-warning"
-                  href="/personne/crud/<%= personne._id %>/update"
+                  href="/personne/crud/<%= cours.personnes[index]._id %>/update"
                   role="button"
                   >Modifier</a
                 >
                 <a
                   class="btn btn-success"
-                  href="/personne/crud/<%= personne._id %>/read"
+                  href="/personne/crud/<%= cours.personnes[index]._id %>/read"
                   role="button"
                   >Détails</a
                 >
-                <a
+                <button
                   class="btn btn-danger"
-                  href="/personne/crud/<%= personne._id %>/delete"
+                  onclick="deleteLiaison('<%= cours.join[index]._id %>')"
                   role="button"
-                  >Supprimer</a
+                  type="button"
                 >
+                  Supprimer liaison
+                </button>
               </td>
             </tr>
-            <% }) %>
+            <% } %>
           </tbody>
         </table>
       </div>
@@ -79,5 +82,15 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      async function deleteLiaison(id) {
+        await fetch(`http://localhost:3000/personnes_cours/crud/${id}/delete`, {
+          method: "DELETE",
+        }).then((res) => {
+          window.location.reload();
+        });
+      }
+    </script>
   </body>
 </html>

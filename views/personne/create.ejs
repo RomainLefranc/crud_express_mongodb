@@ -21,11 +21,17 @@
           <form method="POST">
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
-              <input type="text" name="name" class="form-control" />
+              <input type="text" name="name" class="form-control" required />
             </div>
             <div class="mb-3">
               <label for="genre" class="form-label">Genre</label>
-              <select class="form-select" name="genre" aria-label="Genre">
+              <select
+                class="form-select"
+                name="genre"
+                aria-label="Genre"
+                required
+              >
+                <option></option>
                 <option value="homme">Homme</option>
                 <option value="femme">Femme</option>
                 <option value="autre">Autre</option>

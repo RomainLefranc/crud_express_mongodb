@@ -47,12 +47,14 @@
                   >Détails</a
                 >
 
-                <a
+                <button
                   class="btn btn-danger"
-                  href="/cours/crud/<%= cours._id %>/delete"
+                  onclick="deleteCours('<%= cours._id %>')"
+                  type="button"
                   role="button"
-                  >Supprimer</a
                 >
+                  Supprimer
+                </button>
               </td>
             </tr>
             <% }) %>
@@ -66,5 +68,16 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      async function deleteCours(id) {
+        await fetch(`http://localhost:3000/cours/crud/${id}/delete`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }).then((res) => {
+          window.location.reload();
+        });
+      }
+    </script>
   </body>
 </html>

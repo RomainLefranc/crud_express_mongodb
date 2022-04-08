@@ -1,21 +1,16 @@
-const MongoClient = require("mongodb").MongoClient;
-const ObjectId = require("mongodb").ObjectId;
-const dbUrl = "mongodb://localhost:27017";
-const dbName = "Romain";
+const Cours = require("../model/cours");
+const Personne = require("../model/personne");
+const Personne_cours = require("../model/personne_cours");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.update_get = async function (req, res) {
   const personneId = req.params.personneId;
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
+  const personne = await Personne.findOne({ _id: ObjectId(personneId) }).catch(
+    (e) => res.status(500).send(e)
   );
-  const db = client.db(dbName);
-  const personne = await db
-    .collection("personnes")
-    .findOne({ _id: ObjectId(personneId) })
-    .catch((error) => res.status(500).send(error));
   if (personne) {
     return res.render("personne/update", { personne });
   }
@@ -27,14 +22,10 @@ exports.update_post = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
-  );
-  const db = client.db(dbName);
-  await db
-    .collection("personnes")
-    .updateOne({ _id: ObjectId(personneId) }, { $set: req.body })
-    .catch((error) => res.status(500).send(error));
+  await Personne.updateOne(
+    { _id: ObjectId(personneId) },
+    { $set: req.body }
+  ).catch((e) => res.status(500).send(e));
   return res.redirect(`/personne`);
 };
 
@@ -43,16 +34,10 @@ exports.delete = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
+  await Personne.deleteOne({ _id: ObjectId(personneId) }).catch((e) =>
+    res.status(500).send(e)
   );
-  const db = client.db(dbName);
-  await db
-    .collection("personnes")
-    .deleteOne({ _id: ObjectId(personneId) })
-    .catch((error) => res.status(500).send(error));
-  return res.redirect("/personne");
+  return res.status(200).send("ok");
 };
 
 exports.create_get = function (req, res) {
@@ -60,27 +45,13 @@ exports.create_get = function (req, res) {
 };
 
 exports.create_post = async function (req, res) {
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
-  );
-  const db = client.db(dbName);
-  await db
-    .collection("personnes")
-    .insertOne(req.body)
-    .catch((error) => res.status(500).send(error));
+  const personne = new Personne(req.body);
+  await Personne.create(personne).catch((e) => res.status(500).send(e));
   return res.redirect("/personne");
 };
 
 exports.list = async function (req, res) {
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
-  );
-  const db = client.db(dbName);
-  const personnes = await db
-    .collection("personnes")
-    .find()
-    .toArray()
-    .catch((error) => res.status(500).send(error));
+  const personnes = await Personne.find().catch((e) => res.status(500).send(e));
   return res.render("personne/list", { personnes });
 };
 
@@ -89,37 +60,29 @@ exports.read = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
-  );
-  const db = client.db(dbName);
-  let personne = await db
-    .collection("personnes")
-    .aggregate([
-      {
-        $lookup: {
-          from: "personnes_cours",
-          localField: "_id",
-          foreignField: "id.personne",
-          as: "join",
-        },
+  let personne = await Personne.aggregate([
+    {
+      $lookup: {
+        from: "personnes_cours",
+        localField: "_id",
+        foreignField: "key.personne",
+        as: "join",
       },
-      {
-        $lookup: {
-          from: "cours",
-          localField: "join.id.cours",
-          foreignField: "_id",
-          as: "cours",
-        },
+    },
+    {
+      $lookup: {
+        from: "cours",
+        localField: "join.key.cours",
+        foreignField: "_id",
+        as: "cours",
       },
-      {
-        $match: {
-          _id: new ObjectId(personneId),
-        },
+    },
+    {
+      $match: {
+        _id: new ObjectId(personneId),
       },
-    ])
-    .toArray()
-    .catch((error) => res.status(500).send(error));
+    },
+  ]).catch((e) => res.status(500).send(e));
   if (personne) {
     personne = personne[0];
     return res.render("personne/read", { personne });
@@ -128,15 +91,7 @@ exports.read = async function (req, res) {
 };
 
 exports.add_cours_get = async function (req, res) {
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
-  );
-  const db = client.db(dbName);
-  const cours = await db
-    .collection("cours")
-    .find()
-    .toArray()
-    .catch((error) => res.status(500).send(error));
+  const cours = await Cours.find().catch((e) => res.status(500).send(e));
   return res.render("personne/add_cours", { cours });
 };
 
@@ -145,19 +100,14 @@ exports.add_cours_post = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-
-  const client = await MongoClient.connect(dbUrl).catch((e) =>
-    res.status(500).send(err)
+  const personne_cours = new Personne_cours({
+    key: {
+      cours: ObjectId(req.body.cours),
+      personne: ObjectId(personneId),
+    },
+  });
+  await Personne_cours.create(personne_cours).catch((e) =>
+    res.status(500).send(e)
   );
-  const db = client.db(dbName);
-  await db
-    .collection("personnes_cours")
-    .insertOne({
-      id: {
-        cours: ObjectId(req.body.cours),
-        personne: ObjectId(personneId),
-      },
-    })
-    .catch((error) => res.status(500).send(error));
   return res.redirect(`/personne/crud/${personneId}/read`);
 };

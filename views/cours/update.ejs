@@ -22,6 +22,7 @@
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
               <input
+                required
                 type="text"
                 name="name"
                 class="form-control"
@@ -39,5 +40,14 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script>
+      async function updateCours(id) {
+        await fetch(`http://localhost:3000/cours/crud/${id}/update`, {
+          method: "PUT",
+        }).then((res) => {
+          window.location.reload();
+        });
+      }
+    </script>
   </body>
 </html>
