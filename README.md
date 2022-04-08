@@ -10,8 +10,8 @@ Librairies utilisées :
 
 
 Objectifs : 
-1 - Réalisez un CRUD d'un object quelconque (pour moi : une personne)
-2 - Réalisez une jointure entre l'objet et un autre objet (pour moi : un cours)
+- Réalisez un CRUD d'un object quelconque (pour moi : une personne)
+- Réalisez une jointure entre l'objet et un autre objet quelconque (pour moi : un cours)
 
 To do :
 - Utilisez un autre material design que Bootstrap
