@@ -4,15 +4,19 @@ const Personne_cours = require("../model/personne_cours");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.update_get = async function (req, res) {
+  // récuperation de l'id dans l'url
   const coursId = req.params.coursId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(coursId)) {
     return res.status(404).send("id invalide");
   }
+
   const cours = await Cours.findOne({ _id: ObjectId(coursId) }).catch((e) =>
     res.status(500).send(e)
   );
-  console.log(cours);
   const personnes = await Personne.find().catch((e) => res.status(500).send(e));
+
   if (cours) {
     return res.render("cours/update", { cours, personnes });
   }
@@ -20,7 +24,10 @@ exports.update_get = async function (req, res) {
 };
 
 exports.update_post = async function (req, res) {
+  // récuperation de l'id dans l'url
   const coursId = req.params.coursId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(coursId)) {
     return res.status(404).send("id invalide");
   }
@@ -31,12 +38,15 @@ exports.update_post = async function (req, res) {
 };
 
 exports.delete = async function (req, res) {
+  // récuperation de l'id dans l'url
   const coursId = req.params.coursId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(coursId)) {
     return res.status(404).send("id invalide");
   }
   await Cours.deleteOne({ _id: ObjectId(coursId) }).catch((e) =>
-    res.statuss(500).send(e)
+    res.status(500).send(e)
   );
   return res.status(200).send("ok");
 };
@@ -50,7 +60,6 @@ exports.create_get = async function (req, res) {
 
 exports.create_post = async function (req, res) {
   const cours = new Cours(req.body);
-  console.log(cours.name);
   await Cours.create(cours).catch((e) => res.status(500).send(e));
   return res.redirect("/cours");
 };
@@ -61,7 +70,10 @@ exports.list = async function (req, res) {
 };
 
 exports.read = async function (req, res) {
+  // récuperation de l'id dans l'url
   const coursId = req.params.coursId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(coursId)) {
     return res.status(404).send("id invalide");
   }
@@ -71,14 +83,14 @@ exports.read = async function (req, res) {
       $lookup: {
         from: "personnes_cours",
         localField: "_id",
-        foreignField: "key.cours",
+        foreignField: "id.id_cours",
         as: "join",
       },
     },
     {
       $lookup: {
         from: "personnes",
-        localField: "join.key.personne",
+        localField: "join.id.id_personne",
         foreignField: "_id",
         as: "personnes",
       },
@@ -102,14 +114,17 @@ exports.add_personne_get = async function (req, res) {
 };
 
 exports.add_personne_post = async function (req, res) {
+  // récuperation de l'id dans l'url
   const coursId = req.params.coursId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(coursId)) {
     return res.status(404).send("id invalide");
   }
   const personne_cours = new Personne_cours({
-    key: {
-      cours: ObjectId(coursId),
-      personne: ObjectId(req.body.personne),
+    id: {
+      id_cours: ObjectId(coursId),
+      id_personne: ObjectId(req.body.personne),
     },
   });
   await Personne_cours.create(personne_cours).catch((e) =>

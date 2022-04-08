@@ -40,32 +40,32 @@
           </form>
         </div>
         <a
-          class="btn btn-success"
+          class="btn btn-success mb-3"
           href="/personne/<%= personne._id %>/cours/crud/create"
           role="button"
-          >Ajouter cours</a
+          >Assigner cours</a
         >
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">cours</th>
+              <th scope="col">Cours</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <% for( let index = 0; index < personne.cours.length; index++ ) { %>
+            <% personne.cours.forEach((cours, index) => { %>
             <tr>
-              <td><%= personne.cours[index].name %></td>
+              <td><%= cours.name %></td>
               <td>
                 <a
                   class="btn btn-warning"
-                  href="/cours/crud/<%= personne.cours[index]._id %>/update"
+                  href="/cours/crud/<%= cours._id %>/update"
                   role="button"
                   >Modifier</a
                 >
                 <a
                   class="btn btn-success"
-                  href="/cours/crud/<%= personne.cours[index]._id %>/read"
+                  href="/cours/crud/<%= cours._id %>/read"
                   role="button"
                   >Détails</a
                 >
@@ -75,11 +75,11 @@
                   role="button"
                   type="button"
                 >
-                  Supprimer liaison
+                  Désassigner
                 </button>
               </td>
             </tr>
-            <% } %>
+            <% }) %>
           </tbody>
         </table>
       </div>

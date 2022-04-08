@@ -4,7 +4,10 @@ const Personne_cours = require("../model/personne_cours");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.update_get = async function (req, res) {
+  // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
@@ -18,7 +21,10 @@ exports.update_get = async function (req, res) {
 };
 
 exports.update_post = async function (req, res) {
+  // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
@@ -30,7 +36,10 @@ exports.update_post = async function (req, res) {
 };
 
 exports.delete = async function (req, res) {
+  // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
@@ -56,7 +65,10 @@ exports.list = async function (req, res) {
 };
 
 exports.read = async function (req, res) {
+  // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
@@ -65,14 +77,14 @@ exports.read = async function (req, res) {
       $lookup: {
         from: "personnes_cours",
         localField: "_id",
-        foreignField: "key.personne",
+        foreignField: "id.id_personne",
         as: "join",
       },
     },
     {
       $lookup: {
         from: "cours",
-        localField: "join.key.cours",
+        localField: "join.id.id_cours",
         foreignField: "_id",
         as: "cours",
       },
@@ -96,14 +108,17 @@ exports.add_cours_get = async function (req, res) {
 };
 
 exports.add_cours_post = async function (req, res) {
+  // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
+
+  // vérification que c'est un id valide
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
   const personne_cours = new Personne_cours({
-    key: {
-      cours: ObjectId(req.body.cours),
-      personne: ObjectId(personneId),
+    id: {
+      id_cours: ObjectId(req.body.cours),
+      id_personne: ObjectId(personneId),
     },
   });
   await Personne_cours.create(personne_cours).catch((e) =>
