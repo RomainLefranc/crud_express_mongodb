@@ -10,6 +10,7 @@ const personneSchema = new mongoose.Schema({
     enum: ["homme", "femme", "autre"],
     required: true,
   },
+  versionKey: false,
 });
 const Personne = mongoose.model("Personne", personneSchema);
 

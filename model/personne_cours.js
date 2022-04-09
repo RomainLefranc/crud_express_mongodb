@@ -10,6 +10,7 @@ const keySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  _id: false,
 });
 const personne_coursSchema = new mongoose.Schema({
   id: {
@@ -17,6 +18,7 @@ const personne_coursSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  versionKey: false,
 });
 
 const Personne_cours = mongoose.model("personnes_cours", personne_coursSchema);

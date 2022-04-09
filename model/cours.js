@@ -5,6 +5,7 @@ const coursSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  versionKey: false,
 });
 const Cours = mongoose.model("Cours", coursSchema);
 
