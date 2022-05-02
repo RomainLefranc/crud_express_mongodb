@@ -21,21 +21,11 @@
           <form method="POST">
             <div class="mb-3">
               <label for="cours" class="form-label">cours</label>
-              <input
-                readonly
-                type="text"
-                class="form-control"
-                value="<%= cours.name %>"
-              />
+              <input readonly type="text" class="form-control" value="<%= cours.name %>" />
             </div>
           </form>
         </div>
-        <a
-          class="btn btn-success mb-3"
-          href="/cours/<%= cours._id %>/personne/crud/create"
-          role="button"
-          >Assigner personne</a
-        >
+        <a class="btn btn-success mb-3" href="/cours/<%= cours._id %>/personne/crud/create" role="button">Assigner personne</a>
         <table class="table">
           <thead>
             <tr>
@@ -48,26 +38,9 @@
             <tr>
               <td><%= personne.name %></td>
               <td>
-                <a
-                  class="btn btn-warning"
-                  href="/personne/crud/<%= personne._id %>/update"
-                  role="button"
-                  >Modifier</a
-                >
-                <a
-                  class="btn btn-success"
-                  href="/personne/crud/<%= personne._id %>/read"
-                  role="button"
-                  >Détails</a
-                >
-                <button
-                  class="btn btn-danger"
-                  onclick="deleteLiaison('<%= cours.join[index]._id %>')"
-                  role="button"
-                  type="button"
-                >
-                  Désassigner
-                </button>
+                <a class="btn btn-warning" href="/personne/crud/<%= personne._id %>/update" role="button">Modifier</a>
+                <a class="btn btn-success" href="/personne/crud/<%= personne._id %>/read" role="button">Détails</a>
+                <button class="btn btn-danger" onclick="deleteLiaison('<%= cours.join[index]._id %>')" role="button" type="button">Désassigner</button>
               </td>
             </tr>
             <% }) %>

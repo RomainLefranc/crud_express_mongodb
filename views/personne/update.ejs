@@ -19,7 +19,7 @@
 
       <div class="row justify-content-center">
         <div class="col-3">
-          <form method="POST">
+          <form method="POST" id="form">
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
               <input required
@@ -32,7 +32,7 @@
             </div>
             <div class="mb-3">
               <label for="genre" class="form-label">Genre</label>
-              <select class="form-select" name="genre" aria-label="Genre" id="genre" required
+              <select class="form-select" name="genre"  aria-label="Genre" id="genre" required
               >
                 <option value="homme" <% if(personne.genre == "homme"){ %> selected <% } %> >Homme</option>
                 <option value="femme" <% if(personne.genre == "femme"){ %> selected <% } %> >Femme</option>
@@ -52,20 +52,22 @@
     ></script>
 
     <script>
-      async function updatePersonne(id) {
-        await fetch(`http://localhost:3000/personne/crud/${id}/update`, {
+      const form = document.getElementById("form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        fetch(`http://localhost:3000/personne/crud/<%= personne._id %>/update`, {
           method: "PUT",
-          headers: { 'Content-Type': 'application/json' },
-          body: {
-            name: document.getElementById('name').value,
-            genre : document.getElementById("genre").value
-          }
-        }).then(() => {
-          // modal message
-        }).catch(() => {
-          // modal erreur
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("name").value,
+            genre: document.getElementById("genre").value,
+          }),
         })
-      }
+          .catch((e) => console.log(e))
+          .then(() => {
+            window.location.href = "/personne";
+          });
+      });
     </script>
   </body>
 </html>

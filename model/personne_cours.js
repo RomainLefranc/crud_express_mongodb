@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { required } = require("nodemon/lib/config");
+var sanitizerPlugin = require("mongoose-sanitizer");
 
 const keySchema = new mongoose.Schema({
   id_cours: {
@@ -19,7 +20,7 @@ const personne_coursSchema = new mongoose.Schema({
     required: true,
   },
   versionKey: false,
-});
+}).plugin(sanitizerPlugin);
 
 const Personne_cours = mongoose.model("personnes_cours", personne_coursSchema);
 

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+var sanitizerPlugin = require("mongoose-sanitizer");
 
 const personneSchema = new mongoose.Schema({
   name: {
@@ -11,7 +12,7 @@ const personneSchema = new mongoose.Schema({
     required: true,
   },
   versionKey: false,
-});
+}).plugin(sanitizerPlugin);
 const Personne = mongoose.model("Personne", personneSchema);
 
 module.exports = Personne;

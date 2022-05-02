@@ -11,16 +11,14 @@ exports.update_get = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  const personne = await Personne.findOne({ _id: ObjectId(personneId) }).catch(
-    (e) => res.status(500).send(e)
-  );
+  const personne = await Personne.findOne({ _id: ObjectId(personneId) }).catch((e) => res.status(500).send(e));
   if (personne) {
     return res.render("personne/update", { personne });
   }
   return res.status(404).send("Not found");
 };
 
-exports.update_post = async function (req, res) {
+exports.update_put = async function (req, res) {
   // récuperation de l'id dans l'url
   const personneId = req.params.personneId;
 
@@ -28,11 +26,9 @@ exports.update_post = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  await Personne.updateOne(
-    { _id: ObjectId(personneId) },
-    { $set: req.body }
-  ).catch((e) => res.status(500).send(e));
-  return res.redirect(`/personne`);
+  await Personne.updateOne({ _id: ObjectId(personneId) }, { $set: req.body })
+    .catch((e) => res.status(500).send(e))
+    .then((e) => res.status(200).send(e));
 };
 
 exports.delete = async function (req, res) {
@@ -43,9 +39,7 @@ exports.delete = async function (req, res) {
   if (!ObjectId.isValid(personneId)) {
     return res.status(404).send("id invalide");
   }
-  await Personne.deleteOne({ _id: ObjectId(personneId) }).catch((e) =>
-    res.status(500).send(e)
-  );
+  await Personne.deleteOne({ _id: ObjectId(personneId) }).catch((e) => res.status(500).send(e));
   return res.status(200).send("ok");
 };
 
@@ -55,8 +49,9 @@ exports.create_get = function (req, res) {
 
 exports.create_post = async function (req, res) {
   const personne = new Personne(req.body);
-  await Personne.create(personne).catch((e) => res.status(500).send(e));
-  return res.redirect("/personne");
+  await Personne.create(personne)
+    .catch((e) => res.status(500).send(e))
+    .then((e) => res.status(200).send(e));
 };
 
 exports.list = async function (req, res) {
@@ -103,8 +98,10 @@ exports.read = async function (req, res) {
 };
 
 exports.add_cours_get = async function (req, res) {
+  const personneId = req.params.personneId;
+  const personne = await Personne.findById(personneId).catch((e) => res.status(500).send(e));
   const cours = await Cours.find().catch((e) => res.status(500).send(e));
-  return res.render("personne/add_cours", { cours });
+  return res.render("personne/add_cours", { cours, personne });
 };
 
 exports.add_cours_post = async function (req, res) {
@@ -121,8 +118,7 @@ exports.add_cours_post = async function (req, res) {
       id_personne: ObjectId(personneId),
     },
   });
-  await Personne_cours.create(personne_cours).catch((e) =>
-    res.status(500).send(e)
-  );
-  return res.redirect(`/personne/crud/${personneId}/read`);
+  await Personne_cours.create(personne_cours)
+    .catch((e) => res.status(500).send(e))
+    .then((e) => res.status(200).send(e));
 };

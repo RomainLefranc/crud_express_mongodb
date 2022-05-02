@@ -18,16 +18,10 @@
 
       <div class="row justify-content-center">
         <div class="col-3">
-          <form method="POST">
+          <form method="POST" id="form">
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
-              <input
-                required
-                type="text"
-                name="name"
-                class="form-control"
-                value="<%= cours.name %>"
-              />
+              <input required type="text" name="name" id="name" class="form-control" value="<%= cours.name %>" />
             </div>
             <button type="submit" class="btn btn-primary">Modifier</button>
           </form>
@@ -41,13 +35,19 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      async function updateCours(id) {
-        await fetch(`http://localhost:3000/cours/crud/${id}/update`, {
+      const form = document.getElementById("form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        fetch(`http://localhost:3000/cours/crud/<%= cours._id %>/update`, {
           method: "PUT",
-        }).then((res) => {
-          window.location.reload();
-        });
-      }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: document.getElementById("name").value }),
+        })
+          .catch((e) => console.log(e))
+          .then(() => {
+            window.location.href = "/cours";
+          });
+      });
     </script>
   </body>
 </html>

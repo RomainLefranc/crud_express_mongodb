@@ -18,19 +18,14 @@
 
       <div class="row justify-content-center">
         <div class="col-3">
-          <form method="POST">
+          <form method="POST" id="form">
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
-              <input type="text" name="name" class="form-control" required />
+              <input type="text" name="name" class="form-control" id="name" required />
             </div>
             <div class="mb-3">
               <label for="genre" class="form-label">Genre</label>
-              <select
-                class="form-select"
-                name="genre"
-                aria-label="Genre"
-                required
-              >
+              <select class="form-select" name="genre" aria-label="Genre" id="genre" required>
                 <option></option>
                 <option value="homme">Homme</option>
                 <option value="femme">Femme</option>
@@ -48,5 +43,23 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script>
+      const form = document.getElementById("form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        fetch("http://localhost:3000/personne/crud/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("name").value,
+            genre: document.getElementById("genre").value,
+          }),
+        })
+          .catch((e) => console.log(e))
+          .then((test) => {
+            window.location.href = "/personne";
+          });
+      });
+    </script>
   </body>
 </html>

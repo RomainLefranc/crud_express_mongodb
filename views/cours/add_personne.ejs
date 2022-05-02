@@ -18,14 +18,12 @@
 
       <div class="row justify-content-center">
         <div class="col-3">
-          <form method="POST">
+          <form method="POST" id="form">
             <div class="mb-3">
               <label for="personne" class="form-label">Personne</label>
-              <select class="form-select" name="personne">
+              <select class="form-select" id="personne" name="personne">
                 <% personnes.forEach(personne => { %>
-                <option value="<%= personne._id %>">
-                  <%= personne.name %>
-                </option>
+                <option value="<%= personne._id %>"><%= personne.name %></option>
                 <% }) %>
               </select>
             </div>
@@ -40,5 +38,20 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script>
+      const form = document.getElementById("form");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        fetch(`http://localhost:3000/cours/<%= cours._id %>/personne/crud/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ personne: document.getElementById("personne").value }),
+        })
+          .catch((e) => console.log(e))
+          .then(() => {
+            window.location.href = "/cours/crud/<%= cours._id %>/read";
+          });
+      });
+    </script>
   </body>
 </html>

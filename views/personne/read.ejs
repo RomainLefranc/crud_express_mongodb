@@ -21,30 +21,15 @@
           <form method="POST">
             <div class="mb-3">
               <label for="name" class="form-label">Nom</label>
-              <input
-                readonly
-                type="text"
-                class="form-control"
-                value="<%= personne.name %>"
-              />
+              <input readonly type="text" class="form-control" value="<%= personne.name %>" />
             </div>
             <div class="mb-3">
               <label for="genre" class="form-label">Genre</label>
-              <input
-                readonly
-                type="text"
-                class="form-control"
-                value="<%= personne.genre %>"
-              />
+              <input readonly type="text" class="form-control" value="<%= personne.genre %>" />
             </div>
           </form>
         </div>
-        <a
-          class="btn btn-success mb-3"
-          href="/personne/<%= personne._id %>/cours/crud/create"
-          role="button"
-          >Assigner cours</a
-        >
+        <a class="btn btn-success mb-3" href="/personne/<%= personne._id %>/cours/crud/create" role="button">Assigner cours</a>
         <table class="table">
           <thead>
             <tr>
@@ -57,26 +42,9 @@
             <tr>
               <td><%= cours.name %></td>
               <td>
-                <a
-                  class="btn btn-warning"
-                  href="/cours/crud/<%= cours._id %>/update"
-                  role="button"
-                  >Modifier</a
-                >
-                <a
-                  class="btn btn-success"
-                  href="/cours/crud/<%= cours._id %>/read"
-                  role="button"
-                  >Détails</a
-                >
-                <button
-                  class="btn btn-danger"
-                  onclick="deleteLiaison('<%= personne.join[index]._id %>')"
-                  role="button"
-                  type="button"
-                >
-                  Désassigner
-                </button>
+                <a class="btn btn-warning" href="/cours/crud/<%= cours._id %>/update" role="button">Modifier</a>
+                <a class="btn btn-success" href="/cours/crud/<%= cours._id %>/read" role="button">Détails</a>
+                <button class="btn btn-danger" onclick="deleteLiaison('<%= personne.join[index]._id %>')" role="button" type="button">Désassigner</button>
               </td>
             </tr>
             <% }) %>

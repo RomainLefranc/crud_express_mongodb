@@ -9,8 +9,6 @@ exports.delete = async function (req, res) {
   if (!ObjectId.isValid(personnes_coursId)) {
     return res.status(404).send("id invalide");
   }
-  await Personne_cours.deleteOne({ _id: ObjectId(personnes_coursId) }).catch(
-    (e) => res.status(500).send(e)
-  );
+  await Personne_cours.deleteOne({ _id: ObjectId(personnes_coursId) }).catch((e) => res.status(500).send(e));
   return res.status(200).send("ok");
 };

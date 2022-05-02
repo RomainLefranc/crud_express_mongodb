@@ -17,9 +17,7 @@
       <%- include('../navbar'); %>
 
       <div class="row justify-content-center">
-        <a class="btn btn-success" href="/personne/crud/create" role="button"
-          >Ajouter</a
-        >
+        <a class="btn btn-success" href="/personne/crud/create" role="button">Ajouter</a>
         <table class="table">
           <thead>
             <tr>
@@ -34,27 +32,11 @@
               <td><%= personne.name %></td>
               <td><%= personne.genre %></td>
               <td>
-                <a
-                  class="btn btn-warning"
-                  href="/personne/crud/<%= personne._id %>/update"
-                  role="button"
-                  >Modifier</a
-                >
+                <a class="btn btn-warning" href="/personne/crud/<%= personne._id %>/update" role="button">Modifier</a>
 
-                <a
-                  class="btn btn-success"
-                  href="/personne/crud/<%= personne._id %>/read"
-                  role="button"
-                  >Détails</a
-                >
+                <a class="btn btn-success" href="/personne/crud/<%= personne._id %>/read" role="button">Détails</a>
 
-                <button
-                  class="btn btn-danger"
-                  onclick="deletePersonne('<%= personne._id %>')"
-                  type="button"
-                >
-                  Supprimer
-                </button>
+                <button class="btn btn-danger" onclick="deletePersonne('<%= personne._id %>')" type="button">Supprimer</button>
               </td>
             </tr>
             <% }) %>

@@ -14,11 +14,8 @@ router.get("/personne/crud/:personneId/read", personneController.read);
 // update get
 router.get("/personne/crud/:personneId/update", personneController.update_get);
 
-// update post
-router.post(
-  "/personne/crud/:personneId/update",
-  personneController.update_post
-);
+// update put
+router.put("/personne/crud/:personneId/update", personneController.update_put);
 
 // delete
 router.delete("/personne/crud/:personneId/delete", personneController.delete);
@@ -27,15 +24,9 @@ router.delete("/personne/crud/:personneId/delete", personneController.delete);
 router.get("/personne", personneController.list);
 
 // add cours get
-router.get(
-  "/personne/:personneId/cours/crud/create",
-  personneController.add_cours_get
-);
+router.get("/personne/:personneId/cours/crud/create", personneController.add_cours_get);
 
 // add cours post
-router.post(
-  "/personne/:personneId/cours/crud/create",
-  personneController.add_cours_post
-);
+router.post("/personne/:personneId/cours/crud/create", personneController.add_cours_post);
 
 module.exports = router;
